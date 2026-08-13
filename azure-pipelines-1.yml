@@ -58,7 +58,13 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az acr login --name todoclusteracr001'
-      
+    - task: Bash@3
+      displayName: 'Tag Docker Image'
+      inputs:
+        targetType: inline
+        script: |
+          docker tag axion-app:$(Build.BuildId) todoclusteracr001.azurecr.io/axion-app:$(Build.BuildId)
+          
     
     - task: Bash@3
       displayName: Push Docker Image to ACR
