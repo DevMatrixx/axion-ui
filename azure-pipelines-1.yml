@@ -54,7 +54,7 @@ stages:
       inputs:
         connectionType: 'azureRM'
         azureSubscription: 'Axion-Service-Connection'
-        scriptType: 'ps'
+        scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az acr login --name todoclusteracr001'
       
