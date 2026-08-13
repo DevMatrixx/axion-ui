@@ -32,3 +32,42 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/axion-app.tar'
         artifact: 'docker-image'
         publishLocation: 'pipeline'
+
+- stage: Push_ACR
+  displayName: Push Image to ACR
+  dependsOn: Build_Image
+  jobs:
+  - job: Push
+    displayName: Push Docker Image
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'docker-image'
+        targetPath: '$(Pipeline.Workspace)/docker-image'
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          docker load -i $(Pipeline.Workspace)/docker-image/axion-app.tar
+    - task: AzureCLI@3
+      inputs:
+        connectionType: 'azureRM'
+        azureSubscription: 'Axion-Service-Connection'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az acr login --name todoclusteracr001'
+      
+    
+    - task: Bash@3
+      displayName: Push Docker Image to ACR
+      inputs:
+        targetType: 'inline'
+        script: |
+          docker push todoclusteracr001.azurecr.io/axion-app:$(Build.BuildId)
+
+    
+    
+    
+
+    
