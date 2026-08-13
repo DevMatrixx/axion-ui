@@ -51,6 +51,7 @@ stages:
         script: |
           docker load -i $(Pipeline.Workspace)/docker-image/axion-app.tar
     - task: AzureCLI@3
+      displayName: Azure Login
       inputs:
         connectionType: 'azureRM'
         azureSubscription: 'Axion-Service-Connection'
