@@ -16,7 +16,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          docker build -t axion-app:$(Build.BuildId)
+          docker build -t axion-app:$(Build.BuildId) .
     
     - task: Bash@3
       inputs:
